@@ -14,9 +14,9 @@
 #define DHTTYPE DHT21   // DHT 21 (AM2301)
 DHT dht(DHTPIN, DHTTYPE, 15);
 
-String apiKey = "SJSTP5ANSYFC5CB5"; // Enter your Write API key from ThingSpeak
+String apiKey = "Enter your Write API key from ThingSpeak"; // Enter your Write API key from ThingSpeak
 const char *ssid = "simon"; // replace with your wifi ssid and wpa2 key
-const char *pass = "binh12345";
+const char *pass = "password";
 const char* server = "api.thingspeak.com";
 float number_wind ;
 float humidity ;
@@ -66,11 +66,11 @@ void loop()
     // configure traged server and url
     // get the entry_id from AirVisual
 http://api.airvisual.com/v2/nearest_city?key=yourKey//
-    http.begin("http://api.openweathermap.org/data/2.5/weather?q=Turan&appid=eb1821cfb6c7675f6bbe3ec6f7cb83cf"); //HTTP
+    http.begin("http://api.openweathermap.org/data/2.5/weather?q=Turan&appid=yourKey"); //HTTP
     Serial.print("[HTTP] begin...");
     Serial.println("[HTTP] GET...");
     // start connection and send HTTP header
-    Serial.print("http://api.openweathermap.org/data/2.5/weather?q=Turan&appid=eb1821cfb6c7675f6bbe3ec6f7cb83cf");
+    Serial.print("http://api.openweathermap.org/data/2.5/weather?q=yourKey");
     int httpCode = http.GET();
 
     // httpCode will be negative on error
