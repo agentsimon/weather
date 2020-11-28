@@ -46,6 +46,9 @@ float pressure;
 float temph;
 float humidity_local;
 float visibility;
+String rain;
+String clouds;
+String MyStatus;
 ESP8266WiFiMulti WiFiMulti;
 unsigned long myChannelNumber = SECRET_CH_ID;
 const char * myWriteAPIKey = SECRET_WRITE_APIKEY;
@@ -84,11 +87,11 @@ void loop() {
   // configure traged server and url
   // get the entry_id from AirVisual
   //http://api.airvisual.com/v2/nearest_city?key=yourKey//
-  http.begin("http://api.openweathermap.org/data/2.5/weather?q=Turan&appid=your_key"); //HTTP
+  http.begin("http://api.openweathermap.org/data/2.5/weather?q=Turan&appid=eb1821cfb6c7675f6bbe3ec6f7cb83cf"); //HTTP
   Serial.print("[HTTP] begin...");
   Serial.println("[HTTP] GET...");
   // start connection and send HTTP header
-  Serial.print("http://api.openweathermap.org/data/2.5/weather?q=Turan&appid=your_key");
+  Serial.print("http://api.openweathermap.org/data/2.5/weather?q=Turan&appid=eb1821cfb6c7675f6bbe3ec6f7cb83cf");
   int httpCode = http.GET();
 
   // httpCode will be negative on error
@@ -101,16 +104,19 @@ void loop() {
       String payload = http.getString();
       Serial.println(payload);
       String weather = jsonExtract(payload, "main");
-      Serial.println(weather);
+      String rain = jsonExtract(payload, "description");
+      Serial.println("Rain is.."); Serial.println(rain);
+      Serial.println(rain);
       String weather_list = jsonExtract(weather, "main");
       Serial.println(weather_list);
       String weather_speed = jsonExtract(payload, "wind");
       Serial.println(weather_speed);
       float number_wind_ms = jsonExtract(weather_speed, "speed").toFloat();
-
-      Serial.print("Wind speed..");
       number_wind = (number_wind_ms * 18) / 5;
       Serial.println(number_wind); //Wind speed in KM/H
+      String clouds = jsonExtract(payload, "clouds");
+      
+      
 
       pressure = jsonExtract(payload, "pressure").toFloat();
       humidity_local = jsonExtract(payload, "humidity").toFloat();
@@ -131,6 +137,13 @@ void loop() {
       Serial.println(temph);
       Serial.print("Visibility is..");
       Serial.println(visibility);
+      Serial.print("Rain..");
+      Serial.println(rain);
+      Serial.print("Clouds..");
+      Serial.println(clouds);
+      Serial.println("Mystatus...");
+      MyStatus= rain+clouds;
+      Serial.println(MyStatus);
     } else {
       Serial.printf("[HTTP] GET... failed, error: %s", http.errorToString(httpCode).c_str());
 
@@ -142,9 +155,14 @@ void loop() {
     ThingSpeak.setField(4, number_wind);
     ThingSpeak.setField(5, humidity_local);
     ThingSpeak.setField(6,  visibility);
+    //ThingSpeak.setField(7, rain);
+    //ThingSpeak.setField(8,  clouds);
     // Write to ThingSpeak. There are up to 8 fields in a channel, allowing you to store up to 8 different
+    //String MyStatus= rain+clouds;
+    Serial.println("Here..");
+    Serial.print(MyStatus);
     // pieces of information in a channel.  Here, we write to field 1.
-    ThingSpeak.setStatus(String("Yes, data is in"));
+    ThingSpeak.setStatus(MyStatus);
     int x = ThingSpeak.writeFields(myChannelNumber, myWriteAPIKey);
     if (x == 200) {
       Serial.println("Channel update successful.");
