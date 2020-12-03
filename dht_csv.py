@@ -23,8 +23,8 @@ dht22_sensor = Adafruit_DHT.DHT22
 def cam_capture():
     os.system('fswebcam -r 320x240 -S 3 --jpeg 75 --no-banner --save /home/pi/Documents/python/capture/%Y-%m-%d-%H:%M.jpg') 
 
-while True:
-		with open('capture/write.csv', mode = 'w') as filecsv:
+with open('capture/write.csv', mode = 'w') as filecsv:
+		while True:
 			cam_capture()
 			print("Camera captured and saved")
 			humidity, temperature = Adafruit_DHT.read_retry(dht22_sensor, DHT_DATA_PIN)
