@@ -43,11 +43,11 @@ string.alphanum = '1234567890avcdefghijklmnopqrstuvwxyzxABCDEFGHIJKLMNOPQRSTUVWX
 
 # The ThingSpeak Channel ID.
 # Replace <YOUR-CHANNEL-ID> with your channel ID.
-channelID = "1260661"
+channelID = "<YOUR-CHANNEL-ID>"
 
 # The write API key for the channel.
 # Replace <YOUR-CHANNEL-WRITEAPIKEY> with your write API key.
-writeAPIKey = "5QY4AJY5PMVZVVKJ"
+writeAPIKey = "<YOUR-CHANNEL-WRITEAPIKEY> "
 
 # The hostname of the ThingSpeak MQTT broker.
 mqttHost = "mqtt.thingspeak.com"
