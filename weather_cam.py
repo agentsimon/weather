@@ -35,10 +35,11 @@ window = pygame.display.set_mode((width, height), pygame.RESIZABLE)
 cam.start()
 utc =pytz.UTC
 
-city = LocationInfo(10.8333, 106.6667)
+
 api_key = "Your_key"
-lat = "16.075239"
-lon = "108.224136"
+lat = "Your_latitude"
+lon = "Your_longitude"
+city = LocationInfo(lat, lon) 
 string.alphanum = '1234567890avcdefghijklmnopqrstuvwxyzxABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
 # The ThingSpeak Channel ID.
@@ -56,7 +57,7 @@ mqttHost = "mqtt.thingspeak.com"
 mqttUsername = "TSMQTTRpiDemo"
 
 # Your MQTT API key from Account > My Profile.
-mqttAPIKey = "JF5DL7X8LR749ZKG"
+mqttAPIKey = "Your MQTT-API"
 
 tTransport = "websockets"
 tPort = 80
