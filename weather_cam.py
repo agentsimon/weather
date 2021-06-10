@@ -36,7 +36,7 @@ cam.start()
 utc =pytz.UTC
 
 city = LocationInfo(10.8333, 106.6667)
-api_key = "389579cb0a02784fb378a926f0a31766"
+api_key = "Your_key"
 lat = "16.075239"
 lon = "108.224136"
 string.alphanum = '1234567890avcdefghijklmnopqrstuvwxyzxABCDEFGHIJKLMNOPQRSTUVWXYZ'
