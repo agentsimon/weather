@@ -14,9 +14,9 @@
 #define DHTTYPE DHT21   // DHT 21 (AM2301)
 DHT dht(DHTPIN, DHTTYPE, 15);
 
-String apiKey = "Enter your Write API key"; // Enter your Write API key from ThingSpeak
-const char *ssid = "your wifi ssid"; // replace with your wifi ssid and wpa2 key
-const char *pass = "wpa2 key";
+String apiKey = "9MM34MIOI5HH6AAA"; // Enter your Write API key from ThingSpeak
+const char *ssid = "simon"; // replace with your wifi ssid and wpa2 key
+const char *pass = "binh12345";
 const char* server = "api.thingspeak.com";
 float number_wind ;
 float humidity ;
@@ -67,13 +67,13 @@ void loop()
 
     Serial.print("[HTTP] begin...");
     // configure traged server and url
-    // get the entry_id from AirVisual
-http://api.airvisual.com/v2/nearest_city?key=yourKey//
-    http.begin("http://api.openweathermap.org/data/2.5/weather?q=Turan&appid=eb1821cfb6c7675f6bbe3ec6f7cb83cf"); //HTTP
+    // get the entry_id from Open weather
+    http://api.openweathermap.org/data/2.5/weather?q=Turan&appidkey=yourKey//
+    http.begin("http://api.openweathermap.org/data/2.5/weather?q=Turan&appid=yourKey"); //HTTP
     Serial.print("[HTTP] begin...");
     Serial.println("[HTTP] GET...");
     // start connection and send HTTP header
-    Serial.print("http://api.openweathermap.org/data/2.5/weather?q=Turan&appid=eb1821cfb6c7675f6bbe3ec6f7cb83cf");
+    Serial.print("http://api.openweathermap.org/data/2.5/weather?q=Turan&appid=yourKey");
     int httpCode = http.GET();
 
     // httpCode will be negative on error
@@ -97,7 +97,7 @@ http://api.airvisual.com/v2/nearest_city?key=yourKey//
         Serial.println(number_wind); //Wind speed in KM/H
         local_temp = jsonExtract(payload, "temp").toFloat();
         local_pressure = jsonExtract(payload, "pressure").toFloat();
-        humidity_local= jsonExtract(payload, "humidity").toFloat();
+        humidity_local = jsonExtract(payload, "humidity").toFloat();
         visibility = jsonExtract(payload, "visibility").toFloat();
         // Reading temperature or humidity takes about 250 milliseconds!
         // Sensor readings may also be up to 2 seconds 'old' (its a very slow sensor)
@@ -114,7 +114,7 @@ http://api.airvisual.com/v2/nearest_city?key=yourKey//
         Serial.print("Local humidity is..");
         Serial.println(humidity_local);
         Serial.print("Local temperature is..");
-        Serial.println(local_temp -273);
+        Serial.println(local_temp - 273);
         Serial.println("Local wind speed is");
         Serial.print(number_wind);
         Serial.print("Local visibility is..");
@@ -141,7 +141,7 @@ http://api.airvisual.com/v2/nearest_city?key=yourKey//
       postStr += String(number_wind, 2);
       postStr += "&field6=";
       postStr += String(humidity_local, 2);
-       postStr += "&field7=";
+      postStr += "&field7=";
       postStr += String(visibility, 0);
       postStr += "\r\n\r\n\r\n\r\n";
       delay(2500);//waitting for reply, important! the time is base on the condition of internet
