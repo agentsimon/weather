@@ -14,9 +14,9 @@
 #define DHTTYPE DHT21   // DHT 21 (AM2301)
 DHT dht(DHTPIN, DHTTYPE, 15);
 
-String apiKey = "9MM34MIOI5HH6AAA"; // Enter your Write API key from ThingSpeak
-const char *ssid = "simon"; // replace with your wifi ssid and wpa2 key
-const char *pass = "binh12345";
+String apiKey = "Enter your Write API key"; // Enter your Write API key from ThingSpeak
+const char *ssid = "your wifi ssid"; // replace with your wifi ssid and wpa2 key
+const char *pass = "wpa2 key";
 const char* server = "api.thingspeak.com";
 float number_wind ;
 float humidity ;
