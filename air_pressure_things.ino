@@ -8,13 +8,12 @@
 #include <Wire.h>
 #include <jsonlib.h>
 #include <TimerEvent.h>
-#include "DHT.h"
+#include "DHTesp.h"
 #define DHTPIN 2
+DHTesp dht;
 
-#define DHTTYPE DHT21   // DHT 21 (AM2301)
-DHT dht(DHTPIN, DHTTYPE, 15);
 
-String apiKey = "Enter your Write API key"; // Enter your Write API key from ThingSpeak
+String apiKey = "your Write API key from ThingSpeak"; // Enter your Write API key from ThingSpeak
 const char *ssid = "your wifi ssid"; // replace with your wifi ssid and wpa2 key
 const char *pass = "your wpa2 key";
 const char* server = "api.thingspeak.com";
@@ -54,7 +53,7 @@ void setup()
 
 
   delay(3000);
-  dht.begin();
+  dht.setup(2, DHTesp::DHT22); // Connect DHT sensor to GPIO 2
   Serial.println("REBOOT");
 }
 
@@ -84,29 +83,29 @@ void loop()
       // file found at server
       if (httpCode == HTTP_CODE_OK) {
         String payload = http.getString();
-        Serial.println(payload);
+        //Serial.println(payload);
         String weather = jsonExtract(payload, "main");
-        Serial.println(weather);
+        //Serial.println(weather);
         String weather_list = jsonExtract(weather, "main");
-        Serial.println(weather_list);
+       // Serial.println(weather_list);
         String weather_speed = jsonExtract(payload, "wind");
-        Serial.println(weather_speed);
+        //Serial.println(weather_speed);
         float number_wind_ms = jsonExtract(weather_speed, "speed").toFloat();
-        Serial.print("Wind speed..");
         number_wind = (number_wind_ms * 18) / 5;
-        Serial.println(number_wind); //Wind speed in KM/H
         local_temp = jsonExtract(payload, "temp").toFloat();
         local_pressure = jsonExtract(payload, "pressure").toFloat();
         humidity_local = jsonExtract(payload, "humidity").toFloat();
         visibility = jsonExtract(payload, "visibility").toFloat();
         // Reading temperature or humidity takes about 250 milliseconds!
         // Sensor readings may also be up to 2 seconds 'old' (its a very slow sensor)
-        delay(2000);
-        humidity = dht.readHumidity();
+        
+        delay(dht.getMinimumSamplingPeriod());
+        humidity = dht.getHumidity();
         // Read temperature as Celsius (the default)
-        temph = dht.readTemperature();
-        Serial.print("House pressure is..");
-        Serial.println(pressure);
+        temph = dht.getTemperature();
+        Serial.println("....");
+        Serial.print("Local pressure is..");
+        Serial.println(local_pressure);
         Serial.print("House humidity is..");
         Serial.println(humidity);
         Serial.print("House temperature is..");
@@ -115,8 +114,8 @@ void loop()
         Serial.println(humidity_local);
         Serial.print("Local temperature is..");
         Serial.println(local_temp - 273);
-        Serial.println("Local wind speed is");
-        Serial.print(number_wind);
+        Serial.print("Local wind speed is..");
+        Serial.println(number_wind);
         Serial.print("Local visibility is..");
         Serial.println(visibility);
       } else {
@@ -132,7 +131,7 @@ void loop()
       postStr += "&field1=";
       postStr += String(temph, 2);
       postStr += "&field2=";
-      postStr += String(pressure, 2);
+      postStr += String(local_pressure, 2);
       postStr += "&field3=";
       postStr += String(humidity, 2);
       postStr += "&field4=";
