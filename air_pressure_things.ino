@@ -1,8 +1,8 @@
 #include <ESP8266WiFi.h>
-#include <ESP8266WiFiMulti.h>
-#include <DNSServer.h>            //Local DNS Server used for redirecting all requests to the configuration portal
+#include <DNSServer.h> //Local DNS Server used for redirecting all requests to the configuration portal
 #include <ESP8266WebServer.h>     //Local WebServer used to serve the configuration portal
-#include <WiFiManager.h>          //https://github.com/tzapu/WiFiManager WiFi Configuration Magic
+#include <WiFiManager.h>
+#include <ESP8266WiFiMulti.h>//https://github.com/tzapu/WiFiManager WiFi Configuration Magic
 #include <ESP8266HTTPClient.h>
 #include <SPI.h>
 #include <Wire.h>
@@ -11,11 +11,10 @@
 #include "DHTesp.h"
 #define DHTPIN 2
 DHTesp dht;
+ESP8266WiFiMulti WiFiMulti;
+WiFiClient client;
 
-
-String apiKey = "your Write API key from ThingSpeak"; // Enter your Write API key from ThingSpeak
-const char *ssid = "your wifi ssid"; // replace with your wifi ssid and wpa2 key
-const char *pass = "your wpa2 key";
+String apiKey = "your code here"; // Enter your Write API key from ThingSpeak
 const char* server = "api.thingspeak.com";
 float number_wind ;
 float humidity ;
@@ -25,31 +24,18 @@ float humidity_local;
 float local_temp;
 float visibility;
 float local_pressure;
-ESP8266WiFiMulti WiFiMulti;
-WiFiClient client;
+
 // Create  TimerEvent instances
 TimerEvent timerOne;
 void setup()
 {
   Serial.begin(115200); // open serial port, set the baud rate to 9600 bps
 
-  Serial.setTimeout(2000);
-
-  // Wait for serial to initialize.
-  while (!Serial) { }
-
-
+  //Local intialization. Once its business is done, there is no need to keep it around
+  WiFiManager wifiManager;
+  wifiManager.autoConnect("AutoConnectAP");
+  Serial.println("connected...yeey :)");
   delay(10);
-  Serial.println("Connecting to ");
-  Serial.println(ssid);
-  WiFi.begin(ssid, pass);
-  while (WiFi.status() != WL_CONNECTED)
-  {
-    delay(500);
-    Serial.print(".");
-  }
-  Serial.println("");
-  Serial.println("WiFi connected");
 
 
   delay(3000);
@@ -67,12 +53,12 @@ void loop()
     Serial.print("[HTTP] begin...");
     // configure traged server and url
     // get the entry_id from Open weather
-    http://api.openweathermap.org/data/2.5/weather?q=Turan&appidkey=yourKey//
+http://api.openweathermap.org/data/2.5/weather?q=Turan&appidkey=yourKey//
     http.begin("http://api.openweathermap.org/data/2.5/weather?q=Turan&appid=yourKey"); //HTTP
     Serial.print("[HTTP] begin...");
     Serial.println("[HTTP] GET...");
     // start connection and send HTTP header
-    Serial.print("http://api.openweathermap.org/data/2.5/weather?q=Turan&appid=yourKey");
+    Serial.print("http://api.openweathermap.org/data/2.5/weather?q=yourKey");
     int httpCode = http.GET();
 
     // httpCode will be negative on error
@@ -87,7 +73,7 @@ void loop()
         String weather = jsonExtract(payload, "main");
         //Serial.println(weather);
         String weather_list = jsonExtract(weather, "main");
-       // Serial.println(weather_list);
+        // Serial.println(weather_list);
         String weather_speed = jsonExtract(payload, "wind");
         //Serial.println(weather_speed);
         float number_wind_ms = jsonExtract(weather_speed, "speed").toFloat();
@@ -98,7 +84,7 @@ void loop()
         visibility = jsonExtract(payload, "visibility").toFloat();
         // Reading temperature or humidity takes about 250 milliseconds!
         // Sensor readings may also be up to 2 seconds 'old' (its a very slow sensor)
-        
+
         delay(dht.getMinimumSamplingPeriod());
         humidity = dht.getHumidity();
         // Read temperature as Celsius (the default)
@@ -156,13 +142,14 @@ void loop()
 
       Serial.println("");
       Serial.println("Data Sent to Thingspeak");
-    }
-    client.stop();
-    Serial.println("Waiting...");
-    Serial.println("");
-    Serial.println("***************************************************");
-  }
-  Serial.println("I'm awake, but I'm going to delay for some time");
-  delay(1000ul * 60 * 5); // Pause for 5 mins.
 
+      //client.stop();
+      Serial.println("Waiting...");
+      Serial.println("");
+      Serial.println("***************************************************");
+
+      Serial.println("I'm awake, but I'm going to delay for some time");
+      delay(1000ul * 60 * 10); // Pause for 10 mins.
+    }
+  }
 }
