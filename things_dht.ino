@@ -1,3 +1,4 @@
+
 #include "DHTesp.h"
 
 #ifdef ESP32
@@ -53,7 +54,7 @@ void setup() {
   // Autodetect is not working reliable, don't use the following line
   // dht.setup(17);
   // use this instead:
-  dht.setup(17, DHTesp::DHT22); // Connect DHT sensor to GPIO 17
+  dht.setup(2, DHTesp::DHT22); // Connect DHT sensor to GPIO 17
 }
 
 void loop() {
@@ -115,6 +116,21 @@ http://api.openweathermap.org/data/2.5/weather?q=Turan&appidkey=yourKey//
         local_pressure = jsonExtract(payload, "pressure").toFloat();
         local_humidity = jsonExtract(payload, "humidity").toFloat();
         visibility = jsonExtract(payload, "visibility").toFloat();
+        Serial.println("....");
+        Serial.print("Local pressure is..");
+        Serial.println(local_pressure);
+        Serial.print("House humidity is..");
+        Serial.println(house_humidity);
+        Serial.print("House temperature is..");
+        Serial.println(house_temperature);
+        Serial.print("Local humidity is..");
+        Serial.println(local_humidity);
+        Serial.print("Local temperature is..");
+        Serial.println(local_temp - 273);
+        Serial.print("Local wind speed is..");
+        Serial.println(number_wind);
+        Serial.print("Local visibility is..");
+        Serial.println(visibility);
         // set the fields with the values
         ThingSpeak.setField(1, house_humidity);
         ThingSpeak.setField(2, house_temperature);
@@ -148,8 +164,8 @@ http://api.openweathermap.org/data/2.5/weather?q=Turan&appidkey=yourKey//
         }
 
 
-
-        delay(20000); // Wait 20 seconds to update the channel again
+        Serial.println("....sleep for 10 minutes");
+        delay(1000ul*60*10); // Wait 10 minutes seconds to update the channel again
       }
     }
   }
