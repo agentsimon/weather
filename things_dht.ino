@@ -1,4 +1,3 @@
-
 #include "DHTesp.h"
 
 #ifdef ESP32
@@ -88,7 +87,7 @@ void loop() {
     // configure traged server and url
     // get the entry_id from Open weather
 http://api.openweathermap.org/data/2.5/weather?q=Turan&appidkey=yourKey//
-    http.begin(wiFiClient, "http://api.openweathermap.org/data/2.5/weather?q=Turan&appid=yourKey"); //HTTP
+    http.begin(wiFiClient, "http://api.openweathermap.org/data/2.5/weather?q=Turan&appid=eyourKey"); //HTTP
     Serial.print("[HTTP] begin...");
     Serial.println("[HTTP] GET...");
     // start connection and send HTTP header
@@ -132,11 +131,11 @@ http://api.openweathermap.org/data/2.5/weather?q=Turan&appidkey=yourKey//
         Serial.print("Local visibility is..");
         Serial.println(visibility);
         // set the fields with the values
-        ThingSpeak.setField(1, house_humidity);
-        ThingSpeak.setField(2, house_temperature);
-        ThingSpeak.setField(3, local_temp);
-        ThingSpeak.setField(4, number_wind);
-        ThingSpeak.setField(5, local_pressure);
+        ThingSpeak.setField(1, house_temperature);
+        ThingSpeak.setField(2, local_pressure);
+        ThingSpeak.setField(3, house_humidity);
+        ThingSpeak.setField(4, local_temp-273);
+        ThingSpeak.setField(5, number_wind);
         ThingSpeak.setField(6, local_humidity);
         ThingSpeak.setField(7, visibility);
 
@@ -164,8 +163,8 @@ http://api.openweathermap.org/data/2.5/weather?q=Turan&appidkey=yourKey//
         }
 
 
-        Serial.println("....sleep for 10 minutes");
-        delay(1000ul*60*10); // Wait 10 minutes seconds to update the channel again
+        Serial.println("....sleep for 20 minutes");
+        delay(1000ul*60*20); // Wait 20 minutes seconds to update the channel again
       }
     }
   }
