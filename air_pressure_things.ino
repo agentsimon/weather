@@ -14,7 +14,7 @@ DHTesp dht;
 ESP8266WiFiMulti WiFiMulti;
 WiFiClient client;
 
-String apiKey = "93YS4C2UN5QJ0JI3"; // Enter your Write API key from ThingSpeak
+String apiKey = "API key"; // Enter your Write API key from ThingSpeak
 const char* server = "api.thingspeak.com";
 float number_wind ;
 float humidity ;
@@ -54,11 +54,11 @@ void loop()
     // configure traged server and url
     // get the entry_id from Open weather
 http://api.openweathermap.org/data/2.5/weather?q=Turan&appidkey=yourKey//
-    http.begin("http://api.openweathermap.org/data/2.5/weather?q=Turan&appid=eb1821cfb6c7675f6bbe3ec6f7cb83cf"); //HTTP
+    http.begin("http://api.openweathermap.org/data/2.5/weather?q=Turan&appid=Your_key"); //HTTP
     Serial.print("[HTTP] begin...");
     Serial.println("[HTTP] GET...");
     // start connection and send HTTP header
-    Serial.print("http://api.openweathermap.org/data/2.5/weather?q=Turan&appid=eb1821cfb6c7675f6bbe3ec6f7cb83cf");
+    Serial.print("http://api.openweathermap.org/data/2.5/weather?q=Turan&appid=Your_key");
     int httpCode = http.GET();
 
     // httpCode will be negative on error
